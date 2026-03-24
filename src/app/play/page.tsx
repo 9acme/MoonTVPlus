@@ -549,18 +549,6 @@ function PlayPageClient() {
   const [videoCover, setVideoCover] = useState('');
   const [videoDoubanId, setVideoDoubanId] = useState(0);
 
-  // 更新浏览器标题
-  useEffect(() => {
-    const episodeParam = searchParams.get('episode');
-    const episodeNumber = episodeParam ? Math.max(parseInt(episodeParam, 10) || 1, 1) : 1;
-    const paddedEpisode = String(episodeNumber).padStart(3, '0');
-
-    if (videoTitle) {
-      document.title = `${videoTitle}${paddedEpisode}`;
-    } else {
-      document.title = siteName;
-    }
-  }, [videoTitle, searchParams, siteName]);
   // 豆瓣评分数据
   const [doubanRating, setDoubanRating] = useState<{
     value: number;
@@ -611,6 +599,18 @@ function PlayPageClient() {
     }
     return 0;
   });
+
+  // 更新浏览器标题
+  useEffect(() => {
+    const episodeNumber = Math.max(currentEpisodeIndex + 1, 1);
+    const paddedEpisode = String(episodeNumber).padStart(3, '0');
+
+    if (videoTitle) {
+      document.title = `${videoTitle}${paddedEpisode}`;
+    } else {
+      document.title = siteName;
+    }
+  }, [videoTitle, currentEpisodeIndex, siteName]);
 
   // 监听 URL 参数变化，更新集数索引（用于房员跟随换集）
   useEffect(() => {
