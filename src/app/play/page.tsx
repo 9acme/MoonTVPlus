@@ -551,12 +551,16 @@ function PlayPageClient() {
 
   // 更新浏览器标题
   useEffect(() => {
+    const episodeParam = searchParams.get('episode');
+    const episodeNumber = episodeParam ? Math.max(parseInt(episodeParam, 10) || 1, 1) : 1;
+    const paddedEpisode = String(episodeNumber).padStart(3, '0');
+
     if (videoTitle) {
-      document.title = `${siteName} - ${videoTitle}`;
+      document.title = `${videoTitle}${paddedEpisode}`;
     } else {
       document.title = siteName;
     }
-  }, [videoTitle, siteName]);
+  }, [videoTitle, searchParams, siteName]);
   // 豆瓣评分数据
   const [doubanRating, setDoubanRating] = useState<{
     value: number;
